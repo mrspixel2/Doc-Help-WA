@@ -50,6 +50,7 @@ import TuberculosisPredictorPage from '../pages/desease-predictors/tuberculosis/
 import CovidPredictorPage from '../pages/desease-predictors/Covid/predictor-page';
 import KidneyPredictorPage from '../pages/desease-predictors/kidney/predictor-page';
 import ClassificationsPage from '../pages/dashboards/classifications/Classifications';
+import PredictionDetailsPage from '../pages/components/PredictionDetailsPage';
 
 export const defaultRoutes: IRoute[] = [
   {
@@ -247,5 +248,9 @@ export const defaultRoutes: IRoute[] = [
   {
     path: 'kidney_predictor',
     component: KidneyPredictorPage
+  },
+  {
+    path: 'prediction_details',
+    component: PredictionDetailsPage
   }
 ];

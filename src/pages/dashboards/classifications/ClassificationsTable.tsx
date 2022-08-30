@@ -1,13 +1,53 @@
 import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import Modal from 'antd/lib/modal/Modal';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 
 
-const ClassificationTable = (props:any) => {
+const ClassificationTable = (props: any) => {
   const [state, setstate] = useState([]);
   const [loading, setloading] = useState(true);
+  const history = useHistory();
+  const [modaldata, setmodaldata] = useState([]);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = (record) => {
+    console.log(record);
+    setmodaldata(record);
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const valueSwitch = (param1,param2) => {
+    switch(param1) {
+      case 'Kidney':
+        switch(param2) {
+          case 0 : return 'Diagnosed with Cyst';
+          case 1 : return 'Normal';
+          case 2 : return 'Diagnosed with Stone';
+          case 3 : return 'Diagnosed with Tumor';
+        }
+      default:
+        switch(param2) {
+          case 0 : return 'Normal';
+          case 1 : return param1;
+        }
+        
+    }
+  }
+
+
   useEffect(() => {
     getData();
   }, []);
@@ -22,9 +62,12 @@ const ClassificationTable = (props:any) => {
             key: row._id,
             patient: row.patient,
             desease: row.desease,
+            image_path: row.image_path,
+            symptoms: row.symptoms,
+            d_report: row.d_report,
             result: row.result,
             status: row.prediction_status
-            
+
           }))
         );
       }
@@ -67,8 +110,29 @@ const ClassificationTable = (props:any) => {
   ];
 
 
-  return(<Table columns={columns} dataSource={state} />)
+  return (
+    <>
+      <Table columns={columns}
+        dataSource={state}
+        onRow={(record) => ({
+          onClick: () => { showModal(record) }
+        })} />
+      <Modal title="Basic Modal"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}>
+        <p>Patient: {modaldata['patient']}</p>
+        <p>Desease : {modaldata['desease']}</p>
+        <p>Result : {valueSwitch(modaldata['desease'],modaldata['result'])}</p>
+        <p>Doctors report : {modaldata['d_report']}</p>
+        <p>Symptoms : {modaldata['symptoms']}</p>
 
- }
+      </Modal>
+
+
+
+    </>)
+
+}
 
 export default ClassificationTable;
