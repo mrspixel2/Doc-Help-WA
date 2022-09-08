@@ -66,6 +66,7 @@ const ClassificationTable = (props: any) => {
             symptoms: row.symptoms,
             d_report: row.d_report,
             result: row.result,
+            probs: row.probs,
             status: row.prediction_status
 
           }))
@@ -124,6 +125,7 @@ const ClassificationTable = (props: any) => {
         <p>Patient: {modaldata['patient']}</p>
         <p>Desease : {modaldata['desease']}</p>
         <p>Result : {valueSwitch(modaldata['desease'],modaldata['result'])}</p>
+        <p>Probabilities : {modaldata['probs']}</p>
         <p>Doctors report : {modaldata['d_report']}</p>
         <p>Symptoms : {modaldata['symptoms']}</p>
 

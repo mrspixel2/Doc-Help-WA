@@ -30,12 +30,12 @@ class Tuberculosis:
 
             model = load_model(os.path.dirname(__file__) +'\\cnn_model_Tuberculosis.h5')
             img = preprocess_img(filepath)
-            res = model.predict(img)
-            res = np.argmax(res, axis = 1)
+            ress = model.predict(img)
+            res = np.argmax(ress, axis = 1)
 
 
             # create a dictionary with the ID of the task
-            responseObject = {"status": "success", "data": res[0].tolist()}
+            responseObject = {"status": "success","probs": ress[0].tolist(), "data": res[0].tolist()}
             #save prediction data to database
             save(data,responseObject,filepath)
             # return the dictionary
@@ -61,6 +61,7 @@ def save(data,response,filepath):
       "doctor_id": user_id,
       "desease": "tuberculosis",
       "result": response.get('data'),
+      "probs": json.dumps(response.get('probs')),
       "image_path": filepath,
       "symptoms": data.get('symptoms'),
       "d_report": data.get('report'),
