@@ -26,3 +26,8 @@ def kidney_predict():
 @cross_origin()
 def get_all_predictions():
     return predictions.getAllPredictions()
+
+@app.route('/predict/get_predictions_count', methods=['GET'])
+@cross_origin()
+def get_predictions_count():
+    return predictions.getPredictionsCount()

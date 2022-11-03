@@ -1,6 +1,8 @@
+
 import json
 import os
 import random
+import time
 import uuid
 import cv2
 from flask import Flask, Response, flash, jsonify, request, session, redirect, url_for
@@ -27,6 +29,7 @@ class Covid_Model:
             img = preprocess_img(filepath)
             ress = model.predict(img)
             res = np.argmax(ress, axis = 1)
+            time.sleep(5)
             # create a dictionary with the ID of the task
             responseObject = {"status": "success", "probs": ress[0].tolist(), "data": res[0].tolist()}
             #save prediction data to database

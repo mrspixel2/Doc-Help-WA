@@ -34,7 +34,7 @@ const PredictorForm = () => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [uploading, setUploading] = useState(false);
     /*Form values variales*/
-    const InitialValues = { patient: "", symptoms: [] };
+    const InitialValues = { patient: "", symptoms: [], report: "" };
     const [formValues, setFormValues] = useState(InitialValues);
 
 
@@ -52,6 +52,7 @@ const PredictorForm = () => {
         const formData = new FormData();
         formData.append('patient', formValues.patient);
         formData.append('symptoms', JSON.stringify(formValues.symptoms));
+        formData.append('report', formValues.report);
         fileList.forEach(file => {
             formData.append('img', file as RcFile);
         });
@@ -101,7 +102,7 @@ const PredictorForm = () => {
     return (
         <>
 
-            <Card title='Fill in the form and provide the patient`s Chest scan'>
+            <Card title='Fill in the form and provide the patient`s Chest MRI'>
                 <Form form={form} layout='vertical'>
                     <Form.Item label='Patient'>
                         <Input
@@ -135,13 +136,13 @@ const PredictorForm = () => {
                             <Option value='diarrhoea'>diarrhoea</Option>
                             <Option value='a rash on skin, or discolouration of fingers or toes'>a rash on skin, or discolouration of fingers or toes</Option>
                         </Select>
-
-                    </Form.Item>
-                    <Form.Item label='Condition'>
-                        <Input placeholder='Write noticable conditions here' />
                     </Form.Item>
                     <Form.Item label='Doctor Report'>
-                        <Input placeholder='Type report' />
+                        <Input placeholder='Type report'
+                        name='report'
+                        onChange={handleChange}
+                        value={formValues.report}
+                         />
                     </Form.Item>
                     <Form.Item>
                         <Upload {...props}>

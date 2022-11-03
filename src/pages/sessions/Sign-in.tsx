@@ -37,9 +37,9 @@ const SignIn = () => {
           console.log(formValues);
           console.log("User Authenticated");
         }).then(() => {
-          window.location.href = "#/";
+          window.location.href = "#/vertical/default-dashboard";
         })
-          .catch(err => alert('Something went wrong'))
+          .catch(err => alert('Email Or password is incorrect'))
       }
       )
       .catch(() => null);

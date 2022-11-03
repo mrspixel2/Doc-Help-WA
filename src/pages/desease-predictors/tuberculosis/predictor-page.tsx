@@ -101,7 +101,7 @@ const PredictorForm = () => {
     return (
         <>
 
-            <Card title='Fill in the form and provide the patients TORSO scan'>
+            <Card title='Fill in the form and provide the patient`s Torso MRI'>
                 <Form form={form} layout='vertical'>
                     <Form.Item label='Patient'>
                         <Input
@@ -134,9 +134,6 @@ const PredictorForm = () => {
                             <Option value='weight_loss'>Weight loss</Option>
                         </Select>
 
-                    </Form.Item>
-                    <Form.Item label='Condition'>
-                        <Input placeholder='Write noticable conditions here' />
                     </Form.Item>
                     <Form.Item label='Doctor Report'>
                         <Input placeholder='Type report'

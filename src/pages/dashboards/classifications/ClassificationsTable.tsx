@@ -10,7 +10,6 @@ import { useHistory } from 'react-router-dom';
 const ClassificationTable = (props: any) => {
   const [state, setstate] = useState([]);
   const [loading, setloading] = useState(true);
-  const history = useHistory();
   const [modaldata, setmodaldata] = useState([]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -55,7 +54,7 @@ const ClassificationTable = (props: any) => {
   const getData = async () => {
     await Axios.post('http://localhost:5000/predict/getAll_predictions').then(
       res => {
-        console.log(res);
+        console.log(res.data);
         setloading(false);
         setstate(
           res.data.map(row => ({
@@ -118,16 +117,21 @@ const ClassificationTable = (props: any) => {
         onRow={(record) => ({
           onClick: () => { showModal(record) }
         })} />
-      <Modal title="Basic Modal"
+      <Modal title="Diagnostic Informations"
         visible={isModalVisible}
         onOk={handleOk}
-        onCancel={handleCancel}>
+        onCancel={handleCancel}
+        width={1000}>
+        
         <p>Patient: {modaldata['patient']}</p>
         <p>Desease : {modaldata['desease']}</p>
         <p>Result : {valueSwitch(modaldata['desease'],modaldata['result'])}</p>
         <p>Probabilities : {modaldata['probs']}</p>
         <p>Doctors report : {modaldata['d_report']}</p>
-        <p>Symptoms : {modaldata['symptoms']}</p>
+        <p>Symptoms :  
+           {modaldata['symptoms']}
+         </p>
+         <img width='400' src={modaldata['image_path'] as string } height='400' alt='avatar' />
 
       </Modal>
 

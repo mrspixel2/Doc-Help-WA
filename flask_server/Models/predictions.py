@@ -9,6 +9,11 @@ class predictions :
 
         res = list(db.predictions.find({}))
         return json.dumps(res)
+
+    def getPredictionsCount():
+
+        res = list(db.predictions.find({}))
+        return json.dumps(len(res))
         
 
 

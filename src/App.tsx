@@ -53,7 +53,7 @@ const App = () => {
   return (
     <Switch>
       <Route path='/' exact>
-        <Redirect to='/vertical/default-dashboard' />
+        <Redirect to='/public/sign-in' />
       </Route>
 
       <Route path='/public'>

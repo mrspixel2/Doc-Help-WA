@@ -12,7 +12,7 @@ import { useForm } from 'antd/lib/form/Form';
 const Option = Select.Option;
 
 const pageData: IPageData = {
-    title: 'Tuberculosis Predictor',
+    title: 'Kidney Predictor',
     fulFilled: true,
     breadcrumbs: [
         {
@@ -20,7 +20,7 @@ const pageData: IPageData = {
             route: 'default-dashboard'
         },
         {
-            title: 'Tuberculosis Predictor'
+            title: 'Kidney Predictor'
         }
     ]
 };
@@ -101,7 +101,7 @@ const PredictorForm = () => {
     return (
         <>
 
-            <Card title='Fill in the form and provide the patients TORSO scan'>
+            <Card title='Fill in the form and provide the patient`s Kidney MRI'>
                 <Form form={form} layout='vertical'>
                     <Form.Item label='Patient'>
                         <Input
@@ -124,19 +124,16 @@ const PredictorForm = () => {
                             }}
                             value={formValues.symptoms}
                         >
-                            <Option value='coughing'>Coughing for three or more weeks</Option>
-                            <Option value='coughing_blood'>Coughing up blood</Option>
-                            <Option value='fever'>Fever for more than three weaks </Option>
-                            <Option value='Chest_pain'>Chest_pain</Option>
-                            <Option value='feelings_sickness'>Feelings of sickness</Option>
-                            <Option value='feelings_weakness'>Feelings of weakness</Option>
-                            <Option value='night_sweats'>Night sweats</Option>
-                            <Option value='weight_loss'>Weight loss</Option>
+                            <Option value='coughing'>Blood in urine</Option>
+                            <Option value='coughing_blood'>Pain in back or side</Option>
+                            <Option value='fever'>Unexplained weight loss </Option>
+                            <Option value='Chest_pain'>Tiredness</Option>
+                            <Option value='feelings_sickness'>Fever</Option>
+                            <Option value='feelings_weakness'>Impaired kidney function</Option>
+                            <Option value='night_sweats'>Pain or burning sensation while urinating</Option>
+                            <Option value='weight_loss'>nausea</Option>
                         </Select>
 
-                    </Form.Item>
-                    <Form.Item label='Condition'>
-                        <Input placeholder='Write noticable conditions here' />
                     </Form.Item>
                     <Form.Item label='Doctor Report'>
                         <Input placeholder='Type report'

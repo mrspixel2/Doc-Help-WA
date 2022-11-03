@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import time
 import uuid
 import cv2
 from flask import request, session
@@ -24,7 +25,8 @@ class Tuberculosis:
 
 
             random_number = random.randint(00000, 99999)
-            filepath = './tmp/tuberculosis/' + str(random_number) + '.png'
+            filepath = '../public/tmp/tuberculosis/' + str(random_number) + '.png'
+            image_name = str(random_number) + '.png'
             file.save(filepath)
 
 
@@ -32,12 +34,13 @@ class Tuberculosis:
             img = preprocess_img(filepath)
             ress = model.predict(img)
             res = np.argmax(ress, axis = 1)
+            #time.sleep(5)
 
 
             # create a dictionary with the ID of the task
             responseObject = {"status": "success","probs": ress[0].tolist(), "data": res[0].tolist()}
             #save prediction data to database
-            save(data,responseObject,filepath)
+            save(data,responseObject,image_name)
             # return the dictionary
             return responseObject
 
@@ -50,7 +53,7 @@ def preprocess_img(image):
         return z_img
     
 
-def save(data,response,filepath):
+def save(data,response,file):
     user_id = session.get('user_id')
     
 
@@ -62,7 +65,7 @@ def save(data,response,filepath):
       "desease": "tuberculosis",
       "result": response.get('data'),
       "probs": json.dumps(response.get('probs')),
-      "image_path": filepath,
+      "image_path": '/tmp/tuberculosis/' + file,
       "symptoms": data.get('symptoms'),
       "d_report": data.get('report'),
       "prediction_status": response.get('status') 
