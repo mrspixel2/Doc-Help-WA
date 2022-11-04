@@ -21,19 +21,27 @@ class Covid_Model:
         if request.method == 'POST':
             file = request.files['img']
             data = request.form
+
+
+
             random_number = random.randint(00000, 99999)
-            filepath = './tmp/covid/' + str(random_number) + '.png'
+            filepath = '../public/tmp/covid19/' + str(random_number) + '.png'
+            image_name = str(random_number) + '.png'
             file.save(filepath)
-            filename = str(random_number) + '.png'
+
+
             model = load_model(os.path.dirname(__file__) +'\\Covid19_Model.h5')
             img = preprocess_img(filepath)
             ress = model.predict(img)
             res = np.argmax(ress, axis = 1)
             time.sleep(5)
+
+
+
             # create a dictionary with the ID of the task
             responseObject = {"status": "success", "probs": ress[0].tolist(), "data": res[0].tolist()}
             #save prediction data to database
-            save(data,responseObject,filepath)
+            save(data,responseObject,image_name)
             # return the dictionary
             return responseObject
 
@@ -45,7 +53,7 @@ def preprocess_img(image):
         z_img = z_img.reshape(1, z_img.shape[0], z_img.shape[1], z_img.shape[2])
         return z_img
 
-def save(data,response,filepath):
+def save(data,response,file):
     user_id = session.get('user_id')
     
 
@@ -56,9 +64,9 @@ def save(data,response,filepath):
       "doctor_id": user_id,
       "desease": "Covid19",
       "result": response.get('data'),
-      "probs": json.dumps(response.get('probs')),
-      "image_path": filepath,
-      "symptoms": data.get('symptoms'),
+      "probs": response.get('probs'),
+      "image_path": '/tmp/covid19/' + file,
+      "symptoms": data.getlist('symptoms[]'),
       "d_report": data.get('report'),
       "prediction_status": response.get('status') 
     }

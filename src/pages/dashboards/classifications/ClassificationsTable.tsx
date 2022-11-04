@@ -28,21 +28,21 @@ const ClassificationTable = (props: any) => {
     setIsModalVisible(false);
   };
 
-  const valueSwitch = (param1,param2) => {
-    switch(param1) {
+  const valueSwitch = (param1, param2) => {
+    switch (param1) {
       case 'Kidney':
-        switch(param2) {
-          case 0 : return 'Diagnosed with Cyst';
-          case 1 : return 'Normal';
-          case 2 : return 'Diagnosed with Stone';
-          case 3 : return 'Diagnosed with Tumor';
+        switch (param2) {
+          case 0: return 'Diagnosed with Cyst';
+          case 1: return 'Normal';
+          case 2: return 'Diagnosed with Stone';
+          case 3: return 'Diagnosed with Tumor';
         }
       default:
-        switch(param2) {
-          case 0 : return 'Normal';
-          case 1 : return param1;
+        switch (param2) {
+          case 0: return 'Negative';
+          case 1: return 'Positive';
         }
-        
+
     }
   }
 
@@ -122,17 +122,34 @@ const ClassificationTable = (props: any) => {
         onOk={handleOk}
         onCancel={handleCancel}
         width={1000}>
-        
-        <p>Patient: {modaldata['patient']}</p>
-        <p>Desease : {modaldata['desease']}</p>
-        <p>Result : {valueSwitch(modaldata['desease'],modaldata['result'])}</p>
-        <p>Probabilities : {modaldata['probs']}</p>
-        <p>Doctors report : {modaldata['d_report']}</p>
-        <p>Symptoms :  
-           {modaldata['symptoms']}
-         </p>
-         <img width='400' src={modaldata['image_path'] as string } height='400' alt='avatar' />
 
+        <div className="row">
+          <div className="col-md-6">
+        Patient:
+        </div>
+          <div className="col-md-6"> 
+        {modaldata['patient']}
+        </div>
+        </div>
+        <p>Desease : {modaldata['desease']} </p>
+        <p>Result : {valueSwitch(modaldata['desease'], modaldata['result'])}</p>
+        Probabilities :
+        <ul>
+          {modaldata['probs']?.map((prob) => (
+            <li>{prob}</li>
+          ))}
+        </ul>
+
+        <p>Doctors report : {modaldata['d_report']}</p>
+        Symptoms :
+          <ul>
+            {modaldata['symptoms']?.map((symptom, index) => (
+              <li>{symptom}</li>
+            ))}
+          </ul>
+          {console.log(typeof (modaldata['symptoms']))}
+        
+        <img width='400' src={modaldata['image_path'] as string} height='400' alt='avatar' />
       </Modal>
 
 

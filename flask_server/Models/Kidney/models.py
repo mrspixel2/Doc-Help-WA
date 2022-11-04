@@ -20,19 +20,27 @@ class Kidney_Model:
         if request.method == 'POST':
             file = request.files['img']
             data = request.form
+
+
             random_number = random.randint(00000, 99999)
-            filepath = './tmp/kidney/' + str(random_number) + '.png'
+            filepath = '../public/tmp/kidney/' + str(random_number) + '.png'
+            image_name = str(random_number) + '.png'
             file.save(filepath)
-            filename = str(random_number) + '.png'
+
+
+
             model = load_model(os.path.dirname(__file__) +'\\cnn_model_kidney_diseases.h5')
             img = preprocess_img(filepath)
             ress = model.predict(img)
             res = np.argmax(ress, axis = 1)
             time.sleep(5)
+
+
+
             # create a dictionary with the ID of the task
             responseObject = {"status": "success","probs": ress[0].tolist(), "data": res[0].tolist()}
             #save prediction data to database
-            save(data,responseObject,filepath)
+            save(data,responseObject,image_name)
             # return the dictionary
             return responseObject
 
@@ -44,11 +52,9 @@ def preprocess_img(image):
         z_img = z_img.reshape(1, z_img.shape[0], z_img.shape[1], 1)
         return z_img
 
-def save(data,response,filepath):
+def save(data,response,file):
     user_id = session.get('user_id')
     
-
-
     data = {
       "_id": uuid.uuid4().hex,
       "patient": data.get('patient'),
@@ -56,8 +62,8 @@ def save(data,response,filepath):
       "desease": "Kidney",
       "result": response.get('data'),
       "probs": json.dumps(response.get('probs')),
-      "image_path": filepath,
-      "symptoms": data.get('symptoms'),
+      "image_path": '/tmp/kidney/' + file,
+      "symptoms": data.getlist('symptoms[]'),
       "d_report": data.get('report'),
       "prediction_status": response.get('status') 
     }

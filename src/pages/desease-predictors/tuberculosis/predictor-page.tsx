@@ -49,7 +49,13 @@ const PredictorForm = () => {
         event.preventDefault();
         const formData = new FormData();
         formData.append('patient', formValues.patient);
-        formData.append('symptoms', JSON.stringify(formValues.symptoms));
+        alert(Array.from(formValues.symptoms));
+        Array.from(formValues.symptoms).forEach((symptom) => {
+            formData.append('symptoms[]', symptom);
+            console.log(formData.getAll("symptoms[]"))
+        });
+        
+        console.log(typeof(formData.get('symptoms[]')));
         formData.append('report', formValues.report);
         fileList.forEach(file => {
             formData.append('img', file as RcFile);

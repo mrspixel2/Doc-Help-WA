@@ -49,7 +49,13 @@ const PredictorForm = () => {
         event.preventDefault();
         const formData = new FormData();
         formData.append('patient', formValues.patient);
-        formData.append('symptoms', JSON.stringify(formValues.symptoms));
+        alert(Array.from(formValues.symptoms));
+        Array.from(formValues.symptoms).forEach((symptom) => {
+            formData.append('symptoms[]', symptom);
+            console.log(formData.getAll("symptoms[]"))
+        });
+        
+        console.log(typeof(formData.get('symptoms[]')));
         formData.append('report', formValues.report);
         fileList.forEach(file => {
             formData.append('img', file as RcFile);
@@ -124,14 +130,14 @@ const PredictorForm = () => {
                             }}
                             value={formValues.symptoms}
                         >
-                            <Option value='coughing'>Blood in urine</Option>
-                            <Option value='coughing_blood'>Pain in back or side</Option>
-                            <Option value='fever'>Unexplained weight loss </Option>
-                            <Option value='Chest_pain'>Tiredness</Option>
-                            <Option value='feelings_sickness'>Fever</Option>
-                            <Option value='feelings_weakness'>Impaired kidney function</Option>
-                            <Option value='night_sweats'>Pain or burning sensation while urinating</Option>
-                            <Option value='weight_loss'>nausea</Option>
+                            <Option value='blood in urine'>Blood in urine</Option>
+                            <Option value='back-side pain'>Pain in back or side</Option>
+                            <Option value='weight loss'>Unexplained weight loss </Option>
+                            <Option value='tiredness'>Tiredness</Option>
+                            <Option value='fever'>Fever</Option>
+                            <Option value='impaired kidney function'>Impaired kidney function</Option>
+                            <Option value='Pain or burning sensation urinating'>Pain or burning sensation while urinating</Option>
+                            <Option value='nausea'>Nausea</Option>
                         </Select>
 
                     </Form.Item>

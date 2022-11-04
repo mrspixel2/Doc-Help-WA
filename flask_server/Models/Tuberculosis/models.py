@@ -34,7 +34,7 @@ class Tuberculosis:
             img = preprocess_img(filepath)
             ress = model.predict(img)
             res = np.argmax(ress, axis = 1)
-            #time.sleep(5)
+            time.sleep(5)
 
 
             # create a dictionary with the ID of the task
@@ -64,9 +64,9 @@ def save(data,response,file):
       "doctor_id": user_id,
       "desease": "tuberculosis",
       "result": response.get('data'),
-      "probs": json.dumps(response.get('probs')),
+      "probs": response.get('probs'),
       "image_path": '/tmp/tuberculosis/' + file,
-      "symptoms": data.get('symptoms'),
+      "symptoms": data.getlist('symptoms[]'),
       "d_report": data.get('report'),
       "prediction_status": response.get('status') 
     }
