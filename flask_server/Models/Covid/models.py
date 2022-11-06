@@ -68,6 +68,7 @@ def save(data,response,file):
       "image_path": '/tmp/covid19/' + file,
       "symptoms": data.getlist('symptoms[]'),
       "d_report": data.get('report'),
+      "approved": -1,
       "prediction_status": response.get('status') 
     }
     print(data)

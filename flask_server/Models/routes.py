@@ -31,3 +31,8 @@ def get_all_predictions():
 @cross_origin()
 def get_predictions_count():
     return predictions.getPredictionsCount()
+
+@app.route('/predict/update_prediction_approval', methods=['PUT'])
+@cross_origin()
+def update_prediction_approval():
+    return predictions.updatePredictionApproval()

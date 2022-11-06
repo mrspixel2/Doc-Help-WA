@@ -61,10 +61,11 @@ def save(data,response,file):
       "doctor_id": user_id,
       "desease": "Kidney",
       "result": response.get('data'),
-      "probs": json.dumps(response.get('probs')),
+      "probs": response.get('probs'),
       "image_path": '/tmp/kidney/' + file,
       "symptoms": data.getlist('symptoms[]'),
       "d_report": data.get('report'),
+      "approved": -1,
       "prediction_status": response.get('status') 
     }
     print(data)

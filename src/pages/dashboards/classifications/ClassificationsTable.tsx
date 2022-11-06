@@ -1,9 +1,8 @@
-import { Table, Tag } from 'antd';
+import { Button, Descriptions, List, message, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import Modal from 'antd/lib/modal/Modal';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 
 
@@ -11,6 +10,7 @@ const ClassificationTable = (props: any) => {
   const [state, setstate] = useState([]);
   const [loading, setloading] = useState(true);
   const [modaldata, setmodaldata] = useState([]);
+  const key = 'updatable';
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -20,13 +20,86 @@ const ClassificationTable = (props: any) => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const handleApproval = async () => {
+    alert(modaldata['key'])
+    console.log(JSON.stringify({ _id: modaldata['key'], approval: 1 }));
+    await fetch('http://localhost:5000/predict/update_prediction_approval', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ _id: modaldata['key'], approval: 1 }),
+      credentials: "same-origin"
+    })
+      .then((res) => {
+
+        console.log(res);
+        message.loading({ content: 'Updating...', key });
+        setTimeout(() => {
+          message.success({ content: 'Prediction Approved Successfully!', key, duration: 2 });
+        }, 1000);
+
+      })
+      .catch((err) => {
+        message.error('Prediction update failed.');
+        console.log(err);
+      })
+      .finally(() => {
+        setIsModalVisible(false);
+        getData();
+      });
+  };
+
+  const handleDissaproval = async () => {
+    alert(modaldata['key'])
+    console.log(JSON.stringify({ _id: modaldata['key'], approval: 1 }));
+    await fetch('http://localhost:5000/predict/update_prediction_approval', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ _id: modaldata['key'], approval: 0 }),
+      credentials: "same-origin"
+    })
+      .then((res) => {
+        console.log(res);
+        message.loading({ content: 'Updating...', key });
+        setTimeout(() => {
+          message.success({ content: 'Prediction Dissaproved Successfully!', key, duration: 2 });
+        }, 1000);
+
+      })
+      .catch((err) => {
+        message.error('Prediction update failed.');
+        console.log(err);
+      })
+      .finally(() => {
+        setIsModalVisible(false);
+        getData();
+      });
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  const approvalSwitch = (param) => {
+    switch (param) {
+      case 0:
+        return 'Dissaproved';
+      case 1:
+        return 'Approved';
+      default:
+        return 'Pending';
+    }
+  }
+
+  const approvalColor = (param) => {
+    switch (param) {
+      case 'Dissaproved':
+        return '#B22222';
+      case 'Approved':
+        return '#b7ce63';
+      default:
+        return '#cec759';
+    }
+  }
 
   const valueSwitch = (param1, param2) => {
     switch (param1) {
@@ -66,6 +139,7 @@ const ClassificationTable = (props: any) => {
             d_report: row.d_report,
             result: row.result,
             probs: row.probs,
+            approval: row.approved,
             status: row.prediction_status
 
           }))
@@ -97,6 +171,17 @@ const ClassificationTable = (props: any) => {
       )
     },
     {
+      title: 'Approval',
+      dataIndex: 'approval',
+      key: 'approval',
+      responsive: ['sm'],
+      render: (approval) => (
+        <Tag style={{ borderRadius: 15 }} color={approvalColor(approvalSwitch(approval))}>
+          {approvalSwitch(approval)}
+        </Tag>
+      )
+    },
+    {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
@@ -117,43 +202,49 @@ const ClassificationTable = (props: any) => {
         onRow={(record) => ({
           onClick: () => { showModal(record) }
         })} />
-      <Modal title="Diagnostic Informations"
+      <Modal
         visible={isModalVisible}
-        onOk={handleOk}
         onCancel={handleCancel}
-        width={1000}>
-
-        <div className="row">
-          <div className="col-md-6">
-        Patient:
+        width={1000}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Return
+          </Button>,
+          <Button danger loading={loading} onClick={handleDissaproval}>
+            Dissaprove
+          </Button>,
+          <Button type="primary" loading={loading} onClick={handleApproval}>
+            Approve
+          </Button>
+        ]}
+      >
+        <div>
+          <Descriptions title="Diagnostic Informations" bordered>
+            <Descriptions.Item label="Patient Name">{modaldata['patient']}</Descriptions.Item>
+            <Descriptions.Item label="Desease">{modaldata['desease']}</Descriptions.Item>
+            <Descriptions.Item label="Result">{valueSwitch(modaldata['desease'], modaldata['result'])}</Descriptions.Item>
+            <Descriptions.Item label={modaldata['desease'] == 'Kidney' ? 'Probabilities (Cyst - Normal - Stone - Tumor)' : 'Probabilities (Negativity - Positivity)'}>
+              <ul>{modaldata['probs']?.map((prob, index) => (
+                <li key={index}>{prob}</li>
+              ))}</ul></Descriptions.Item>
+            <Descriptions.Item label="Doctors Report">{modaldata['d_report']}</Descriptions.Item>
+            <Descriptions.Item label="Symptoms">
+              <List
+                bordered
+                dataSource={modaldata['symptoms']}
+                renderItem={item => (
+                  <List.Item>
+                    {item}
+                  </List.Item>
+                )}
+              />
+            </Descriptions.Item>
+            <Descriptions.Item label="Patient's MRI Scan">
+              <img width='400' src={modaldata['image_path'] as string} height='400' alt='avatar' />
+            </Descriptions.Item>
+          </Descriptions>
         </div>
-          <div className="col-md-6"> 
-        {modaldata['patient']}
-        </div>
-        </div>
-        <p>Desease : {modaldata['desease']} </p>
-        <p>Result : {valueSwitch(modaldata['desease'], modaldata['result'])}</p>
-        Probabilities :
-        <ul>
-          {modaldata['probs']?.map((prob) => (
-            <li>{prob}</li>
-          ))}
-        </ul>
-
-        <p>Doctors report : {modaldata['d_report']}</p>
-        Symptoms :
-          <ul>
-            {modaldata['symptoms']?.map((symptom, index) => (
-              <li>{symptom}</li>
-            ))}
-          </ul>
-          {console.log(typeof (modaldata['symptoms']))}
-        
-        <img width='400' src={modaldata['image_path'] as string} height='400' alt='avatar' />
       </Modal>
-
-
-
     </>)
 
 }
