@@ -219,16 +219,16 @@ const ClassificationTable = (props: any) => {
         ]}
       >
         <div>
-          <Descriptions title="Diagnostic Informations" bordered>
-            <Descriptions.Item label="Patient Name">{modaldata['patient']}</Descriptions.Item>
-            <Descriptions.Item label="Desease">{modaldata['desease']}</Descriptions.Item>
-            <Descriptions.Item label="Result">{valueSwitch(modaldata['desease'], modaldata['result'])}</Descriptions.Item>
-            <Descriptions.Item label={modaldata['desease'] == 'Kidney' ? 'Probabilities (Cyst - Normal - Stone - Tumor)' : 'Probabilities (Negativity - Positivity)'}>
+          <Descriptions title="Diagnostic Informations" layout="vertical" bordered>
+            <Descriptions.Item label="Patient Name:">{modaldata['patient']}</Descriptions.Item>
+            <Descriptions.Item label="Desease:">{modaldata['desease']}</Descriptions.Item>
+            <Descriptions.Item label="Result:">{valueSwitch(modaldata['desease'], modaldata['result'])}</Descriptions.Item>
+            <Descriptions.Item label={modaldata['desease'] == 'Kidney' ? 'Probabilities (Cyst - Normal - Stone - Tumor):' : 'Probabilities (Negativity - Positivity):'}>
               <ul>{modaldata['probs']?.map((prob, index) => (
                 <li key={index}>{prob}</li>
               ))}</ul></Descriptions.Item>
-            <Descriptions.Item label="Doctors Report">{modaldata['d_report']}</Descriptions.Item>
-            <Descriptions.Item label="Symptoms">
+            <Descriptions.Item label="Doctors Report:">{modaldata['d_report']}</Descriptions.Item>
+            <Descriptions.Item label="Symptoms:">
               <List
                 bordered
                 dataSource={modaldata['symptoms']}
@@ -240,7 +240,9 @@ const ClassificationTable = (props: any) => {
               />
             </Descriptions.Item>
             <Descriptions.Item label="Patient's MRI Scan">
+              <div style={{textAlign: 'center'}}>
               <img width='400' src={modaldata['image_path'] as string} height='400' alt='avatar' />
+              </div>
             </Descriptions.Item>
           </Descriptions>
         </div>

@@ -14,6 +14,16 @@ class predictions :
 
         res = list(db.predictions.find({}))
         return json.dumps(len(res))
+        
+    def getApprovedPredictionsCount():
+
+        res = list(db.predictions.find({"approved": 1}))
+        return json.dumps(len(res))
+
+    def getUnApprovedPredictionsCount():
+
+        res = list(db.predictions.find({"approved": 0}))
+        return json.dumps(len(res))
 
     def updatePredictionApproval():
 
@@ -22,6 +32,20 @@ class predictions :
         approval = data['approval']
         x = db.predictions.find_one_and_update({"_id": id}, {"$set": {"approved": approval}})
         return json.dumps(x)
+
+    def predictionsCountPerDesease():
+
+        res = list(db.predictions.aggregate([{"$group": {"_id": "$desease", "count": {"$sum": 1}}},{"$sort":{"count": -1}}]))
+        return json.dumps(res)
+
+    def predictionCountPerKidneyDesease():
+            
+            res = list(db.predictions.aggregate([{"$match": {"desease": "Kidney"}},
+            {"$group": {"_id": "$result","count": {"$sum": 1}}},
+            {"$sort":{"count": -1}}]))
+            return json.dumps(res)
+            
+        
         
 
 

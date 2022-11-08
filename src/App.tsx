@@ -45,7 +45,7 @@ const App = () => {
           console.log(response);
           alert(response)
         }
-      ).catch(err => alert('Something went wrong'))
+      ).catch(err => console.log('Something went wrong'))
   })
 
 

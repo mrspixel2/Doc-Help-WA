@@ -36,3 +36,23 @@ def get_predictions_count():
 @cross_origin()
 def update_prediction_approval():
     return predictions.updatePredictionApproval()
+
+@app.route('/predict/get_approved_predictions_count', methods=['GET'])
+@cross_origin()
+def get_approved_predictions_count():
+    return predictions.getApprovedPredictionsCount()
+
+@app.route('/predict/get_unapproved_predictions_count', methods=['GET'])
+@cross_origin()
+def get_unapproved_predictions_count():
+    return predictions.getUnApprovedPredictionsCount()
+
+@app.route('/predict/predictions_count_per_desease', methods=['GET'])
+@cross_origin()
+def predictions_count_per_desease():
+    return predictions.predictionsCountPerDesease()
+
+@app.route('/predict/prediction_count_per_kidney_desease', methods=['GET'])
+@cross_origin()
+def prediction_count_per_kidney_desease():
+    return predictions.predictionCountPerKidneyDesease()

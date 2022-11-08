@@ -1,4 +1,5 @@
 
+from datetime import date
 import json
 import os
 import random
@@ -69,6 +70,7 @@ def save(data,response,file):
       "symptoms": data.getlist('symptoms[]'),
       "d_report": data.get('report'),
       "approved": -1,
+      "date": date.today().strftime("%d/%m/%Y"),
       "prediction_status": response.get('status') 
     }
     print(data)
