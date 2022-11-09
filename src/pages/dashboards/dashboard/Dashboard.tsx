@@ -40,9 +40,9 @@ const pageData: IPageData = {
 
 const DashboardPage = () => {
   const [appointments] = useFetchPageData<IAppointment[]>('./data/last-appointments.json', []);
-  const [PredsCount] = useFetch('http://localhost:5000/predict/get_predictions_count', []);
-  const [PredsCountApproved] = useFetch('http://localhost:5000/predict/get_approved_predictions_count', []);
-  const [PredsCountNotApproved] = useFetch('http://localhost:5000/predict/get_unapproved_predictions_count', []);
+  const [PredsCount] = useFetch('http://localhost:5000/query/get_predictions_count', []);
+  const [PredsCountApproved] = useFetch('http://localhost:5000/query/get_approved_predictions_count', []);
+  const [PredsCountNotApproved] = useFetch('http://localhost:5000/query/get_unapproved_predictions_count', []);
   usePageData(pageData);
 
   return (
@@ -146,6 +146,13 @@ const DashboardPage = () => {
         <div className='col-12 col-md-6'>
           <Card title='Kidney classification count'>
             <KidneyPolarArea></KidneyPolarArea>
+          </Card>
+        </div>
+      </div>
+      <div className="row">
+        <div className='col-12 col-md-6'>
+          <Card title='Predictions approval per desease'>
+            <SimpleBarChart></SimpleBarChart>
           </Card>
         </div>
       </div>

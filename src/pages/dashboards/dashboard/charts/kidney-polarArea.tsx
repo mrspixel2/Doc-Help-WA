@@ -18,7 +18,7 @@ const KidneyPolarArea = () => {
 
 
     const fetchData = async () => {
-        const res = await fetch("http://localhost:5000/predict/prediction_count_per_kidney_desease");
+        const res = await fetch("http://localhost:5000/query/prediction_count_per_kidney_desease");
         const data = await res.json()
             .then(data => {
                 setCounts(data.map((d) => d.count));

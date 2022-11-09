@@ -3,12 +3,7 @@ from flask import Flask, Response, jsonify, request, session, redirect
 from app import db
 
 
-class predictions:
-
-    def getAllPredictions():
-
-        res = list(db.predictions.find({}))
-        return json.dumps(res)
+class queries:
 
     def getPredictionsCount():
 
@@ -24,15 +19,6 @@ class predictions:
 
         res = list(db.predictions.find({"approved": 0}))
         return json.dumps(len(res))
-
-    def updatePredictionApproval():
-
-        data = request.get_json()
-        id = data['_id']
-        approval = data['approval']
-        x = db.predictions.find_one_and_update(
-            {"_id": id}, {"$set": {"approved": approval}})
-        return json.dumps(x)
 
     def predictionsCountPerDesease():
 
@@ -65,6 +51,17 @@ class predictions:
                                                          "count": {"$sum": 1}}},
                                             {"$group": {"_id": "$_id.result",
                                                         "symptoms": {"$push": {"symptom": "$_id.symptom", "count": "$count"}}}},
-                                                {"$sort": {"_id": 1}}
+                                             {"$sort": {"_id": 1}}
                                              ]))
+        return json.dumps(res)
+
+    def approvalCountPerDesease():
+
+        res = list(db.predictions.aggregate([{
+            "$group": {
+                "_id": "$desease",
+                "approved": {"$sum": {"$cond": [{"$eq": ["$approved", 1]}, 1, 0]}},
+                "unapproved": {"$sum": {"$cond": [{"$eq": ["$approved", 0]}, 1, 0]}}
+            }
+        }]))
         return json.dumps(res)
