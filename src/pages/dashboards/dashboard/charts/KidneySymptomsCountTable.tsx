@@ -27,7 +27,7 @@ const KidneySymptomsCountTable = () => {
             dataIndex: 'symptoms',
             key: 'symptoms',
             render: (symptoms) => {
-                return symptoms.map((symptom) => <div className='row'>{symptom.symptom}</div>);
+                return symptoms.map((symptom, index) => <div key={index} className='row'>{symptom.symptom}</div>);
             },
             responsive: ['md']
         },
@@ -35,7 +35,7 @@ const KidneySymptomsCountTable = () => {
             title: 'Count',
             dataIndex: 'counts',
             key: 'count',
-            render: (counts) => counts.map((count) => <div className='row'> {count.count} </div>),
+            render: (counts) => counts.map((count, index) => <div key={index} className='row'> {count.count} </div>),
             responsive: ['sm']
         },
         ];

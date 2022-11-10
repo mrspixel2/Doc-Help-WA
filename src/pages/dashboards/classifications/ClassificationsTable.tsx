@@ -61,7 +61,7 @@ const ClassificationTable = (props: any) => {
         console.log(res);
         message.loading({ content: 'Updating...', key });
         setTimeout(() => {
-          message.success({ content: 'Prediction Dissaproved Successfully!', key, duration: 2 });
+          message.success({ content: 'Prediction Rejected Successfully!', key, duration: 2 });
         }, 1000);
 
       })
@@ -82,7 +82,7 @@ const ClassificationTable = (props: any) => {
   const approvalSwitch = (param) => {
     switch (param) {
       case 0:
-        return 'Dissaproved';
+        return 'Rejected';
       case 1:
         return 'Approved';
       default:
@@ -92,7 +92,7 @@ const ClassificationTable = (props: any) => {
 
   const approvalColor = (param) => {
     switch (param) {
-      case 'Dissaproved':
+      case 'Rejected':
         return '#B22222';
       case 'Approved':
         return '#b7ce63';
@@ -206,14 +206,15 @@ const ClassificationTable = (props: any) => {
         visible={isModalVisible}
         onCancel={handleCancel}
         width={1000}
+        key={modaldata['key']}
         footer={[
           <Button key="back" onClick={handleCancel}>
             Return
           </Button>,
-          <Button danger loading={loading} onClick={handleDissaproval}>
-            Dissaprove
+          <Button key="reject" danger loading={loading} onClick={handleDissaproval}>
+            Reject
           </Button>,
-          <Button type="primary" loading={loading} onClick={handleApproval}>
+          <Button key="approve" type="primary" loading={loading} onClick={handleApproval}>
             Approve
           </Button>
         ]}
@@ -232,8 +233,8 @@ const ClassificationTable = (props: any) => {
               <List
                 bordered
                 dataSource={modaldata['symptoms']}
-                renderItem={item => (
-                  <List.Item>
+                renderItem={(item, index) => (
+                  <List.Item key={index}>
                     {item}
                   </List.Item>
                 )}

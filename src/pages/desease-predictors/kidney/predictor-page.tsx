@@ -8,6 +8,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Button, message, Upload } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { useForm } from 'antd/lib/form/Form';
+import { useGetPatients } from '../../../hooks/useGetPatient';
 
 const Option = Select.Option;
 
@@ -27,6 +28,7 @@ const pageData: IPageData = {
 
 const PredictorForm = () => {
     usePageData(pageData);
+    const patients = useGetPatients();
     const [form] = useForm();
 
     const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -54,8 +56,8 @@ const PredictorForm = () => {
             formData.append('symptoms[]', symptom);
             console.log(formData.getAll("symptoms[]"))
         });
-        
-        console.log(typeof(formData.get('symptoms[]')));
+
+        console.log(typeof (formData.get('symptoms[]')));
         formData.append('report', formValues.report);
         fileList.forEach(file => {
             formData.append('img', file as RcFile);
@@ -110,11 +112,20 @@ const PredictorForm = () => {
             <Card title='Fill in the form and provide the patient`s Kidney MRI'>
                 <Form form={form} layout='vertical'>
                     <Form.Item label='Patient'>
-                        <Input
-                            name='patient'
-                            placeholder='Select Patient'
-                            onChange={handleChange}
-                            value={formValues.patient} />
+                        <Select
+                            showSearch
+                            placeholder="Select a patient"
+                            optionFilterProp="children"
+                            filterOption={optionFilter}
+                            onChange={(value: string) => {
+                                console.log(`selected ${value}`);
+                                setFormValues({ ...formValues, patient: value });
+                            }}
+                        >
+                            {patients.map((patient) => (
+                                <Option value={patient.name}>{patient.name}</Option>
+                            ))}
+                        </Select>
                     </Form.Item>
                     <Form.Item label='Symptoms'>
 
@@ -143,10 +154,10 @@ const PredictorForm = () => {
                     </Form.Item>
                     <Form.Item label='Doctor Report'>
                         <Input placeholder='Type report'
-                        name='report'
-                        onChange={handleChange}
-                        value={formValues.report}
-                         />
+                            name='report'
+                            onChange={handleChange}
+                            value={formValues.report}
+                        />
                     </Form.Item>
                     <Form.Item>
                         <Upload {...props}>
