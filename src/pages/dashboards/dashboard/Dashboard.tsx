@@ -7,8 +7,6 @@ import ReactEcharts from 'echarts-for-react';
 import AppointmentsTable from '../../../layout/components/appointmentsTable/AppointmentsTable';
 import hospitalOptions from './charts/hospital-options';
 
-import { incomeInWeek, incomeInMonth } from './charts/income-options';
-
 import {
   patientsGenderOptions,
   departmentsOptions,
@@ -23,6 +21,8 @@ import { useFetch } from '../../../hooks/useFetch';
 import DPieChart from './charts/deseases-piechart';
 import SimpleBarChart from './charts/deseases-barchart';
 import KidneyPolarArea from './charts/kidney-polarArea';
+import SymptomsTreemap from './charts/symptomsTreemap';
+import KidneySymptomsCountTable from './charts/KidneySymptomsCountTable';
 
 
 const pageData: IPageData = {
@@ -75,7 +75,7 @@ const DashboardPage = () => {
             <div className='row'>
               <div className='col-5'>
                 <span
-                  className='icofont icofont-first-aid-alt'
+                  className='icofont icofont-check-circled'
                   style={{ fontSize: 48, color: 'rgba(51, 108, 251, 0.5)' }}
                 />
               </div>
@@ -97,7 +97,7 @@ const DashboardPage = () => {
             <div className='row'>
               <div className='col-5'>
                 <span
-                  className='icofont icofont-blood'
+                  className='icofont icofont-close-circled'
                   style={{ fontSize: 48, color: 'rgba(51, 108, 251, 0.5)' }}
                 />
               </div>
@@ -144,15 +144,28 @@ const DashboardPage = () => {
           </Card>
         </div>
         <div className='col-12 col-md-6'>
+          <Card title='Predictions approval per desease'>
+            <SimpleBarChart></SimpleBarChart>
+          </Card>
+        </div>
+        
+      </div>
+      <div className="row">
+      <div className='col-12 col-md-6'>
           <Card title='Kidney classification count'>
             <KidneyPolarArea></KidneyPolarArea>
           </Card>
         </div>
-      </div>
-      <div className="row">
         <div className='col-12 col-md-6'>
-          <Card title='Predictions approval per desease'>
-            <SimpleBarChart></SimpleBarChart>
+          <Card title='Kidney Symptoms count'>
+            <KidneySymptomsCountTable></KidneySymptomsCountTable>
+          </Card>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-12 col-md-6'>
+          <Card title='Most common symptoms'>
+            <SymptomsTreemap></SymptomsTreemap>
           </Card>
         </div>
       </div>

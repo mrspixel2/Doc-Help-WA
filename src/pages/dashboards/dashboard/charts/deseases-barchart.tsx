@@ -6,31 +6,10 @@ import {
     XAxis,
     YAxis,
     CartesianGrid,
+    ReferenceLine,
     Tooltip,
     Legend
 } from 'recharts';
-
-
-const d = [
-    {
-        name: 'Covid19',
-        approved: 4000,
-        rejected: 2400,
-        amt: 2400
-    },
-    {
-        name: 'Kidney',
-        approved: 3000,
-        rejected: 1398,
-        amt: 2210
-    },
-    {
-        name: 'Tuberculosis',
-        approved: 2000,
-        rejected: 9800,
-        amt: 2290
-    }
-];
 
 const SimpleBarChart = () => {
 
@@ -93,6 +72,7 @@ const SimpleBarChart = () => {
                 <Legend />
                 <Bar dataKey='approved' fill='#8884d8' />
                 <Bar dataKey='rejected' fill='#82ca9d' />
+                <Bar dataKey='total' fill='red' />
             </BarChart>
         </ResponsiveContainer>
     );

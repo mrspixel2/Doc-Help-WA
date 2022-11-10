@@ -62,6 +62,7 @@ class queries:
                 "_id": "$desease",
                 "approved": {"$sum": {"$cond": [{"$eq": ["$approved", 1]}, 1, 0]}},
                 "unapproved": {"$sum": {"$cond": [{"$eq": ["$approved", 0]}, 1, 0]}}
-            }
+            },
+        }, {"$sort": {"_id": 1}
         }]))
         return json.dumps(res)

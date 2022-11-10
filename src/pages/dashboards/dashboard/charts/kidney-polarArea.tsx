@@ -6,6 +6,8 @@ const KidneyPolarArea = () => {
 
     const [counts, setCounts] = useState([100, 200, 300]);
     const [labels, setLabels] = useState(["A", "B", "C"]);
+    const duration = 5000; 
+
 
     const valueSwitch = (param) => {
             switch (param) {
@@ -53,7 +55,7 @@ const KidneyPolarArea = () => {
 
     return (
         <div>
-            <Doughnut data={d} />
+            <Doughnut data={d} animationDuration={duration} />
         </div>
     );
 }
