@@ -72,3 +72,8 @@ def distinctSymptomsCountperKidneyResult():
 @cross_origin()
 def approvalCountPerDesease():
     return queries.approvalCountPerDesease()
+
+@app.route('/query/predictions_per_month', methods=['GET'])
+@cross_origin()
+def predictionsPerMonth():
+    return queries.predictionsCountPerMonth()

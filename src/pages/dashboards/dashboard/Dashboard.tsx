@@ -23,6 +23,7 @@ import SimpleBarChart from './charts/deseases-barchart';
 import KidneyPolarArea from './charts/kidney-polarArea';
 import SymptomsTreemap from './charts/symptomsTreemap';
 import KidneySymptomsCountTable from './charts/KidneySymptomsCountTable';
+import PredictionsMonthLinechart from './charts/predictions-month-linechart';
 
 
 const pageData: IPageData = {
@@ -136,6 +137,10 @@ const DashboardPage = () => {
       <Card title='Hospital survey'>
         <ReactEcharts className='chart-container container-h-400' option={hospitalOptions} />
       </Card>
+      <Card title='Classification survey'>
+        <PredictionsMonthLinechart />
+      </Card>
+
 
       <div className='row'>
         <div className='col-12 col-md-6'>
@@ -148,10 +153,10 @@ const DashboardPage = () => {
             <SimpleBarChart></SimpleBarChart>
           </Card>
         </div>
-        
+
       </div>
       <div className="row">
-      <div className='col-12 col-md-6'>
+        <div className='col-12 col-md-6'>
           <Card title='Kidney classification count'>
             <KidneyPolarArea></KidneyPolarArea>
           </Card>
@@ -163,11 +168,10 @@ const DashboardPage = () => {
         </div>
       </div>
       <div className='row'>
-        <div className='col-12 col-md-6'>
           <Card title='Most common symptoms'>
             <SymptomsTreemap></SymptomsTreemap>
           </Card>
-        </div>
+        
       </div>
 
       <div className='row'>

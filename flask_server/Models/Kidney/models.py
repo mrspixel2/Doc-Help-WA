@@ -1,11 +1,10 @@
-from datetime import date
-import json
+from datetime import date,datetime
 import os
 import random
 import time
 import uuid
 import cv2
-from flask import Flask, Response, flash, jsonify, request, session, redirect, url_for
+from flask import  request, session
 from app import db
 from werkzeug.utils import secure_filename
 from numpy import loadtxt
@@ -67,7 +66,7 @@ def save(data,response,file):
       "symptoms": data.getlist('symptoms[]'),
       "d_report": data.get('report'),
       "approved": -1,
-      "date": date.today().strftime("%d/%m/%Y"),
+      "date": datetime.today(),
       "prediction_status": response.get('status') 
     }
     print(data)

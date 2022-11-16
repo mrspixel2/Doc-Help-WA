@@ -64,5 +64,33 @@ class queries:
                 "unapproved": {"$sum": {"$cond": [{"$eq": ["$approved", 0]}, 1, 0]}}
             },
         }, {"$sort": {"_id": 1}
-        }]))
+            }]))
+        return json.dumps(res)
+
+    def predictionsCountPerMonth():
+
+        res = list(db.predictions.aggregate([
+            {
+                "$project":
+                {
+                    "month": {"$month": "$date"},
+                    "year": {"$year": "$date"}
+                }
+            },
+            {"$group": {
+                "_id": '$year',
+                "jan": {"$sum": {"$cond": [{"$eq": ["$month", 1]}, 1, 0]}},
+                "feb": {"$sum": {"$cond": [{"$eq": ["$month", 2]}, 1, 0]}},
+                "mar": {"$sum": {"$cond": [{"$eq": ["$month", 3]}, 1, 0]}},
+                "apr": {"$sum": {"$cond": [{"$eq": ["$month", 4]}, 1, 0]}},
+                "may": {"$sum": {"$cond": [{"$eq": ["$month", 5]}, 1, 0]}},
+                "jun": {"$sum": {"$cond": [{"$eq": ["$month", 6]}, 1, 0]}},
+                "jul": {"$sum": {"$cond": [{"$eq": ["$month", 7]}, 1, 0]}},
+                "aug": {"$sum": {"$cond": [{"$eq": ["$month", 8]}, 1, 0]}},
+                "sep": {"$sum": {"$cond": [{"$eq": ["$month", 9]}, 1, 0]}},
+                "oct": {"$sum": {"$cond": [{"$eq": ["$month", 10]}, 1, 0]}},
+                "nov": {"$sum": {"$cond": [{"$eq": ["$month", 11]}, 1, 0]}},
+                "dec": {"$sum": {"$cond": [{"$eq": ["$month", 12]}, 1, 0]}}
+            }}
+        ]))
         return json.dumps(res)

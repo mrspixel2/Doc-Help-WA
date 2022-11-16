@@ -1,5 +1,6 @@
 import json
-from flask import Flask, Response, jsonify, request, session, redirect
+from bson import json_util
+from flask import request
 from app import db
 
 
@@ -8,22 +9,7 @@ class predictions:
     def getAllPredictions():
 
         res = list(db.predictions.find({}))
-        return json.dumps(res)
-
-    def getPredictionsCount():
-
-        res = list(db.predictions.find({}))
-        return json.dumps(len(res))
-
-    def getApprovedPredictionsCount():
-
-        res = list(db.predictions.find({"approved": 1}))
-        return json.dumps(len(res))
-
-    def getUnApprovedPredictionsCount():
-
-        res = list(db.predictions.find({"approved": 0}))
-        return json.dumps(len(res))
+        return json.dumps(res, default=json_util.default)
 
     def updatePredictionApproval():
 
@@ -34,37 +20,3 @@ class predictions:
             {"_id": id}, {"$set": {"approved": approval}})
         return json.dumps(x)
 
-    def predictionsCountPerDesease():
-
-        res = list(db.predictions.aggregate(
-            [{"$group": {"_id": "$desease", "count": {"$sum": 1}}}, {"$sort": {"count": -1}}]))
-        return json.dumps(res)
-
-    def predictionCountPerKidneyDesease():
-
-        res = list(db.predictions.aggregate([{"$match": {"desease": "Kidney"}},
-                                             {"$group": {"_id": "$result",
-                                                         "count": {"$sum": 1}}},
-                                             {"$sort": {"count": -1}}]))
-        return json.dumps(res)
-
-    def distinctSymptomsCount():
-
-        res = list(db.predictions.aggregate([{"$unwind": "$symptoms"},
-                                             {"$group": {"_id": "$symptoms",
-                                                         "count": {"$sum": 1}}},
-                                             {"$sort": {"count": -1}}]))
-        return json.dumps(res)
-
-    def distinctSymptomsCountperKidneyResult():
-
-        res = list(db.predictions.aggregate([{"$match": {"desease": "Kidney"}},
-                                             {"$unwind": "$symptoms"},
-                                             {"$group": {"_id": {"result": "$result",
-                                                                 "symptom": "$symptoms"},
-                                                         "count": {"$sum": 1}}},
-                                            {"$group": {"_id": "$_id.result",
-                                                        "symptoms": {"$push": {"symptom": "$_id.symptom", "count": "$count"}}}},
-                                                {"$sort": {"_id": 1}}
-                                             ]))
-        return json.dumps(res)

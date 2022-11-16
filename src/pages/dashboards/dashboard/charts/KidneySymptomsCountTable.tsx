@@ -44,8 +44,9 @@ const KidneySymptomsCountTable = () => {
         const res = await fetch("http://localhost:5000/query/symptoms_count_per_kidney_result");
         const data = await res.json()
             .then(data => {
-                setData(data.map((d) => {
+                setData(data.map((d, index) => {
                     return {
+                        key: index,
                         disease: d._id,
                         symptoms: d.symptoms,
                         counts: d.symptoms
